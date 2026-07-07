@@ -1,125 +1,258 @@
-\# 🤖 Automatic Question Paper Generator
+# 🤖 Automatic Question Paper Generator
 
+An AI-powered web application that automatically generates **MCQ, Descriptive, Unit Test, and Semester Question Papers** from the uploaded syllabus using **OpenRouter/OpenAI AI models**. The system also supports **Course Outcome (CO) Mapping**, PDF/DOCX downloads, and a modern responsive user interface.
 
+---
 
-An AI-powered question paper generator for universities and colleges. Generate MCQ, Descriptive, UT, and Semester papers with Course Outcome mapping.
+## 📌 Project Overview
 
+The **Automatic Question Paper Generator** is designed to simplify the process of creating university-level question papers. Faculty members can upload a syllabus, choose the type of question paper, and instantly generate a well-structured paper with AI assistance.
 
+---
 
-\## ✨ Features
+## ✨ Features
 
+- 🤖 AI-powered Question Generation
+- 📚 Upload Syllabus (PDF, DOCX, TXT)
+- 📝 Generate Multiple Question Paper Types
+  - MCQ Paper
+  - Descriptive Paper
+  - Unit Test (20 Marks)
+  - Semester Examination (80 Marks)
+- 🎯 Course Outcome (CO) Mapping (CO1 – CO6)
+- 📄 Download Question Papers as PDF
+- 📝 Download Question Papers as DOCX
+- 👤 User Login & Signup
+- 🎨 Responsive & Modern UI
+- ⚡ Fast Generation
+- 🔒 Secure Authentication
+- 🌙 Attractive Purple Theme
 
+---
 
-\- 🤖 \*\*AI-Powered Generation\*\* - OpenAI/OpenRouter integration
+## 🛠️ Tech Stack
 
-\- 📝 \*\*4 Paper Types\*\* - MCQ, Descriptive, UT (20M), Semester (80M)
+| Technology | Description |
+|------------|-------------|
+| Python | Backend Programming |
+| Flask | Web Framework |
+| HTML5 | Frontend |
+| CSS3 | Styling |
+| JavaScript | Client-side Scripting |
+| OpenRouter API | AI Question Generation |
+| Firebase | Authentication & Database |
+| ReportLab | PDF Generation |
+| python-docx | DOCX Generation |
 
-\- 🎯 \*\*CO Mapping\*\* - Each question mapped to Course Outcomes (CO1-CO6)
+---
 
-\- 📥 \*\*Multiple Formats\*\* - Download as PDF or DOCX
+## 📂 Project Structure
 
-\- 🎨 \*\*Modern UI\*\* - Dark purple theme with animations
+```text
+automatic-question-paper-generator/
+│
+├── app.py
+├── requirements.txt
+├── .env
+├── firebase_credentials.json
+│
+├── templates/
+│   ├── index.html
+│   ├── login.html
+│   ├── signup.html
+│   ├── dashboard.html
+│   ├── mcq_generator.html
+│   ├── descriptive_generator.html
+│   ├── ut_generator.html
+│   └── semester_generator.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── uploads/
+│
+├── screenshots/
+│   ├── index.jpeg
+│   ├── login.jpeg
+│   ├── home.jpeg
+│   ├── dashboard.jpeg
+│   ├── generate.jpeg
+│   └── paper.jpeg
+│
+└── README.md
+```
 
-\- 🔐 \*\*User Authentication\*\* - Login/Signup system
+---
 
-\- 📤 \*\*File Upload\*\* - Upload syllabus in PDF, DOCX, TXT
+## 🚀 Installation
 
-
-
-\## 🚀 Tech Stack
-
-
-
-\- \*\*Backend:\*\* Flask (Python)
-
-\- \*\*AI:\*\* OpenAI API / OpenRouter API
-
-\- \*\*Database:\*\* Firebase (optional) / In-memory storage
-
-\- \*\*Frontend:\*\* HTML, CSS, JavaScript
-
-\- \*\*PDF Generation:\*\* ReportLab
-
-\- \*\*DOCX Generation:\*\* python-docx
-
-
-
-\## 📋 Prerequisites
-
-
-
-\- Python 3.8+
-
-\- pip
-
-
-
-\## 🔧 Installation
-
-
+### Clone Repository
 
 ```bash
-
-\# Clone repository
-
-git clone https://github.com/YOUR\_USERNAME/automatic-question-paper-generator.git
-
+git clone https://github.com/nikhad28/automatic-question-paper-generator.git
 cd automatic-question-paper-generator
+```
 
+### Create Virtual Environment
 
+### Windows
 
-\# Create virtual environment
-
+```bash
 python -m venv venv
+venv\Scripts\activate
+```
 
-source venv/bin/activate  # Linux/Mac
+### Linux / Mac
 
-\# or
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-venv\\Scripts\\activate  # Windows
+### Install Dependencies
 
-
-
-\# Install dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
+### Configure Environment Variables
 
+Create a `.env` file
 
-\# Create .env file
+```env
+OPENROUTER_API_KEY=your_api_key_here
+SECRET_KEY=your_secret_key
+FIREBASE_CREDENTIALS=firebase_credentials.json
+```
 
-cp .env.example .env
+### Run the Application
 
-\# Add your API keys in .env
-
-
-
-\# Run the application
-
+```bash
 python app.py
+```
 
-# Screenshots
+Open your browser:
 
-## Index Page
+```
+http://127.0.0.1:5000
+```
 
-![Login](screenshots/index.jpeg)
-## Login Page
+---
 
-![Login](screenshots/login.jpeg)
+# 📸 Screenshots
 
-## Home Page
+## 🏠 Landing Page
 
-![Home](screenshots/home.jpeg)
+![Landing Page](screenshots/index.jpeg)
 
+---
 
-## Dashboard
+## 🔐 Login Page
+
+![Login Page](screenshots/login.jpeg)
+
+---
+
+## 🏡 Home Page
+
+![Home Page](screenshots/home.jpeg)
+
+---
+
+## 📊 Dashboard
 
 ![Dashboard](screenshots/dashboard.jpeg)
 
-## Question Generator
+---
 
-![Generator](screenshots/generate.jpeg)
+## 🤖 Question Generator
 
-## Paper 
+![Question Generator](screenshots/generate.jpeg)
 
-![Generator](screenshots/paper.jpeg)
+---
+
+## 📄 Generated Question Paper
+
+![Generated Paper](screenshots/paper.jpeg)
+
+---
+
+# 🎯 Future Enhancements
+
+- AI Difficulty Level Selection
+- Multiple University Templates
+- Question Bank Management
+- Faculty Dashboard
+- Student Portal
+- Email Question Papers
+- Cloud Storage Integration
+- Multi-language Support
+- Analytics Dashboard
+
+---
+
+# 💡 Learning Outcomes
+
+Through this project, I learned:
+
+- Flask Web Development
+- REST APIs
+- AI Integration using OpenRouter
+- Firebase Authentication
+- File Handling in Python
+- PDF & DOCX Generation
+- Environment Variables
+- Responsive Web Design
+- Prompt Engineering
+- Git & GitHub
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork this repository
+2. Create your feature branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+4. Push to the branch
+
+```bash
+git push origin feature-name
+```
+
+5. Create a Pull Request
+
+---
+
+# 📄 License
+
+This project is intended for **educational and academic purposes only**.
+
+---
+
+# 👩‍💻 Developer
+
+**Nikhad Shaikh**
+
+📧 Email: *24dco07@aiktc.ac.in*
+
+💼 LinkedIn: **https://www.linkedin.com/in/nikhad-shaikh-5a2b71394/**
+
+🐙 GitHub: **https://github.com/nikhad28**
+
+---
+
+⭐ If you found this project helpful, don't forget to **star this repository**!
