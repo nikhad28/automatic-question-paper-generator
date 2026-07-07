@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - AI Paper Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Generator Page Specific Styles */
+        .generator-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .generator-section h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #A78BFA, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .generator-section .subtitle {
+            color: #94A3B8;
+            margin-bottom: 28px;
+            font-size: 16px;
+        }
+
+        .back-link {
+            color: #8B5CF6;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #A78BFA;
+            transform: translateX(-4px);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: #8B5CF6;
+        }
+
+        .logo span {
+            font-size: 24px;
+            font-weight: 800;
+            color: #A78BFA;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-right .user-name {
+            color: #94A3B8;
+            font-weight: 500;
+        }
+
+        .header-right .user-name i {
+            margin-right: 8px;
+            color: #8B5CF6;
+        }
+
+        .header-right a {
+            color: #94A3B8;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .header-right a:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: #A78BFA;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #E2E8F0;
+            font-size: 15px;
+        }
+
+        .form-group label i {
+            color: #8B5CF6;
+            margin-right: 8px;
+        }
+
+        .form-group textarea,
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 14px;
+            color: #E2E8F0;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group textarea:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .form-group input[type="number"] {
+            max-width: 200px;
+        }
+
+        .help-text {
+            font-size: 13px;
+            color: #64748B;
+            margin-top: 6px;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(139, 92, 246, 0.25);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .file-label i {
+            font-size: 48px;
+            color: #8B5CF6;
+            margin-bottom: 12px;
+        }
+
+        .file-label span {
+            font-size: 16px;
+            color: #94A3B8;
+        }
+
+        .file-label small {
+            color: #64748B;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+            color: white;
+            box-shadow: 0 4px 24px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-large {
+            padding: 16px 40px;
+            font-size: 18px;
+        }
+
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: 50px 20px;
+            display: none;
+        }
+
+        .spinner {
+            width: 56px;
+            height: 56px;
+            border: 4px solid rgba(139, 92, 246, 0.15);
+            border-top: 4px solid #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-container p {
+            color: #94A3B8;
+            font-size: 16px;
+        }
+
+        /* Results */
+        .results-container {
+            margin-top: 32px;
+            background: rgba(26, 18, 56, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: 24px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .results-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #E2E8F0;
+        }
+
+        .results-header h2 i {
+            color: #8B5CF6;
+            margin-right: 10px;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .questions-display {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .question-item {
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid #8B5CF6;
+            transition: all 0.3s ease;
+        }
+
+        .question-item:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .question-item .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .question-item .q-number {
+            font-weight: 700;
+            color: #A78BFA;
+            font-size: 15px;
+        }
+
+        .question-item .q-type {
+            font-size: 12px;
+            color: #94A3B8;
+            margin-left: 8px;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 12px;
+            border-radius: 100px;
+        }
+
+        .question-item .q-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+            color: #94A3B8;
+        }
+
+        .question-item .q-meta span {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 12px;
+            border-radius: 100px;
+        }
+
+        .question-item .q-meta .co-badge {
+            color: #A78BFA;
+        }
+
+        .question-item .q-text {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #E2E8F0;
+        }
+
+        .question-item .q-options {
+            margin: 8px 0 0 20px;
+            color: #94A3B8;
+        }
+
+        .question-item .q-options li {
+            list-style: none;
+            padding: 3px 0;
+        }
+
+        .question-item .q-answer {
+            margin-top: 8px;
+            color: #34D399;
+            font-weight: 600;
+        }
+
+        .no-questions {
+            text-align: center;
+            color: #94A3B8;
+            padding: 40px;
+        }
+
+        .no-questions i {
+            font-size: 48px;
+            color: #8B5CF6;
+            opacity: 0.4;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        /* Scrollbar */
+        .questions-display::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .questions-display::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .questions-display::-webkit-scrollbar-thumb {
+            background: #8B5CF6;
+            border-radius: 10px;
+        }
+
+        .questions-display::-webkit-scrollbar-thumb:hover {
+            background: #A78BFA;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .generator-section h1 {
+                font-size: 24px;
+            }
+
+            .results-header {
+                flex-direction: column;
+            }
+
+            .results-actions {
+                width: 100%;
+            }
+
+            .results-actions .btn {
+                flex: 1;
+                justify-content: center;
+                font-size: 14px;
+                padding: 12px 16px;
+            }
+
+            .question-item .q-header {
+                flex-direction: column;
+            }
+
+            .file-label {
+                padding: 24px;
+            }
+
+            .file-label i {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            .generator-card {
+                padding: 16px;
+            }
+
+            .results-container {
+                padding: 16px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body style="background: #0a0618; color: #E2E8F0; font-family: 'Inter', sans-serif; min-height: 100vh;">
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span>AI Paper</span>
+            </div>
+            <div class="header-right">
+                <span class="user-name"><i class="fas fa-user-circle"></i> {{ name }}</span>
+                <a href="{{ url_for('dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="{{ url_for('logout') }}" style="color: #EF4444;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </header>
+
+        <!-- Back Link -->
+        <a href="{{ url_for('dashboard') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <!-- Generator Section -->
+        <section class="generator-section">
+            <h1>{{ title }}</h1>
+            <p class="subtitle">Upload syllabus and generate AI-powered university-style questions</p>
+
+            <div class="generator-card" style="background: rgba(26, 18, 56, 0.6); border: 1px solid rgba(139, 92, 246, 0.15); border-radius: 24px; padding: 32px; backdrop-filter: blur(20px);">
+                <form id="generateForm">
+                    <input type="hidden" name="paper_type" value="{{ paper_type }}">
+
+                    <!-- Syllabus Text -->
+                    <div class="form-group">
+                        <label><i class="fas fa-file-alt"></i> Syllabus Content</label>
+                        <textarea id="syllabus_text" name="syllabus_text" rows="8" placeholder="Paste your syllabus text here..."></textarea>
+                        <p class="help-text">Or upload a file below</p>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="form-group">
+                        <label><i class="fas fa-upload"></i> Upload Syllabus File</label>
+                        <div class="file-upload">
+                            <input type="file" id="syllabus_file" name="syllabus_file" accept=".pdf,.docx,.txt">
+                            <div class="file-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span>Click to upload or drag and drop</span>
+                                <small>Supported: PDF, DOCX, TXT</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Number of Questions -->
+                    <div class="form-group">
+                        <label><i class="fas fa-list-ol"></i> Number of Questions</label>
+                        <input type="number" id="num_questions" name="num_questions" value="10" min="1" max="50">
+                        <p class="help-text">(For UT: Max 6, Semester: Max 12)</p>
+                    </div>
+
+                    <!-- Marks per Question -->
+                    <div class="form-group">
+                        <label><i class="fas fa-star"></i> Marks per Question</label>
+                        <input type="number" id="marks_per_question" name="marks_per_question" value="2" min="1" max="20">
+                        <p class="help-text">(For MCQ/Descriptive only. UT and Semester have fixed marks distribution)</p>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button type="submit" class="btn btn-primary btn-large btn-full">
+                        <i class="fas fa-magic"></i> Generate Questions
+                    </button>
+                </form>
+
+                <!-- Loading -->
+                <div id="loading" class="loading-container">
+                    <div class="spinner"></div>
+                    <p>Generating questions using AI...</p>
+                    <p style="font-size: 14px; color: #64748B; margin-top: 8px;">This may take 10-30 seconds</p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div id="results" class="results-container">
+                <div class="results-header">
+                    <h2><i class="fas fa-list-check"></i> Generated Questions</h2>
+                    <div class="results-actions">
+                        <button onclick="downloadPaper('pdf')" class="btn btn-success">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button onclick="downloadPaper('docx')" class="btn btn-info">
+                            <i class="fas fa-file-word"></i> Word
+                        </button>
+                        <button onclick="regeneratePaper()" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Regenerate
+                        </button>
+                    </div>
+                </div>
+                <div id="questionsDisplay">
+                    <div class="no-questions">
+                        <i class="fas fa-file-alt"></i>
+                        <p>No questions generated yet.</p>
+                        <p style="font-size: 14px; margin-top: 8px;">Please submit the form above to generate questions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const form = document.getElementById('generateForm');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        const questionsDisplay = document.getElementById('questionsDisplay');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            loading.style.display = 'block';
+            results.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/generate-paper', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayQuestions(data.data);
+                    results.style.display = 'block';
+                    const count = data.data.questions?.length || 0;
+                    document.querySelector('.results-header h2').innerHTML = 
+                        `<i class="fas fa-list-check"></i> Generated Questions (${count} questions)`;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while generating the paper');
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        function displayQuestions(data) {
+            if (!data.questions || data.questions.length === 0) {
+                questionsDisplay.innerHTML = `
+                    <div class="no-questions">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>No questions generated.</p>
+                        <p style="font-size: 14px; margin-top: 8px;">Please try again with different syllabus content.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+
+            data.questions.forEach((q, index) => {
+                const qNumber = index + 1;
+                const co = q.co || `CO${(index % 6) + 1}`;
+                const marks = q.marks || 1;
+                const type = q.type || 'descriptive';
+
+                let typeIcon = 'fa-pencil';
+                let typeLabel = type.toUpperCase();
+                if (type === 'mcq') {
+                    typeIcon = 'fa-list-check';
+                    typeLabel = 'MCQ';
+                } else if (type === 'true_false') {
+                    typeIcon = 'fa-check-circle';
+                    typeLabel = 'TRUE/FALSE';
+                } else if (type === 'fill_up') {
+                    typeIcon = 'fa-edit';
+                    typeLabel = 'FILL-UP';
+                }
+
+                html += `
+                    <div class="question-item">
+                        <div class="q-header">
+                            <div class="q-number">
+                                Q${qNumber}
+                                <span class="q-type"><i class="fas ${typeIcon}"></i> ${typeLabel}</span>
+                            </div>
+                            <div class="q-meta">
+                                <span class="co-badge"><i class="fas fa-tag"></i> ${co}</span>
+                                <span><i class="fas fa-star"></i> ${marks} marks</span>
+                                ${q.blooms_level ? `<span><i class="fas fa-brain"></i> ${q.blooms_level}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="q-text">${q.question}</div>
+                `;
+
+                if (type === 'mcq' && q.options && q.options.length > 0) {
+                    html += `<ul class="q-options">`;
+                    const optionLabels = ['A', 'B', 'C', 'D'];
+                    q.options.forEach((opt, idx) => {
+                        html += `<li>${optionLabels[idx] || idx + 1}. ${opt}</li>`;
+                    });
+                    if (q.answer) {
+                        html += `<li class="q-answer">✅ Answer: ${q.answer}</li>`;
+                    }
+                    html += `</ul>`;
+                }
+
+                html += `</div>`;
+            });
+
+            questionsDisplay.innerHTML = html;
+        }
+
+        async function downloadPaper(format) {
+            try {
+                const response = await fetch(`/api/download-paper/${format}`);
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `question_paper_${new Date().toISOString().slice(0,10)}.${format === 'pdf' ? 'pdf' : 'docx'}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                } else {
+                    const error = await response.json();
+                    alert('Download failed: ' + (error.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download failed. Please try again.');
+            }
+        }
+
+        function regeneratePaper() {
+            results.style.display = 'none';
+            form.dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('syllabus_file').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (file) {
+                const label = document.querySelector('.file-label span');
+                if (label) label.textContent = file.name;
+                const helpText = document.querySelector('.file-label small');
+                if (helpText) helpText.textContent = `${(file.size / 1024).toFixed(1)} KB`;
+            }
+        });
+
+        document.getElementById('syllabus_text').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+
+</body>
+</html>
