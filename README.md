@@ -98,3 +98,28 @@ cp .env.example .env
 
 python app.py
 
+# Screenshots
+
+## Index Page
+
+![Login](screenshots/index.jpeg)
+## Login Page
+
+![Login](screenshots/login.jpeg)
+
+## Home Page
+
+![Home](screenshots/home.jpeg)
+
+
+## Dashboard
+
+![Dashboard](screenshots/dashboard.jpeg)
+
+## Question Generator
+
+![Generator](screenshots/generate.jpeg)
+
+## Paper 
+
+![Generator](screenshots/paper.jpeg)
